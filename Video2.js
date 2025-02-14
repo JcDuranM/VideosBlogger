@@ -72,21 +72,9 @@
         urlVideo = videoUrl;
 
         return `
-        <div class="contenedorJcDuranM">
-            <div class="reproductorJcDuranM">
+ 
                 <video id="videoJcDuranM" src="${urlVideo}" controls></video> 
-                <div class="controlesJcDuranM">
-                    <button id="playJcDuranM">&#9654;</button>
-                    <span id="tiempoJcDuranM">00:00 / 00:00</span>
-                    <input id="progresoJcDuranM" type="range" min="0" max="100" value="0">
-                    <div class="volumen-containerJcDuranM">
-                        <span id="iconoVolumenJcDuranM">🔊</span>
-                        <input id="volumenJcDuranM" type="range" min="0" max="1" step="0.01" value="1">
-                    </div>
-                    <button id="pantallaCompletaJcDuranM">⛶</button>
-                </div>
-            </div>
-        </div>
+         
         `;
       });
     });
