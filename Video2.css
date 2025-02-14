@@ -1,1 +1,18 @@
-
+ * { box-sizing: border-box; margin: 0; padding: 0; }
+  .contenedorJcDuranM { text-align: center; padding: 10px; }
+  .reproductorJcDuranM { position: relative; display: inline-block; width: 100%; max-width: 640px; }
+  video { width: 100%; border-radius: 10px; cursor: pointer; }
+  .controlesJcDuranM {
+      position: absolute; bottom: 10px; left: 0; width: 100%;
+      display: flex; align-items: center; gap: 8px;
+      background: rgba(0, 0, 0, 0.7); padding: 6px; opacity: 0;
+      transition: opacity 0.3s;
+  }
+  .reproductorJcDuranM:hover .controlesJcDuranM { opacity: 1; }
+  button, input { cursor: pointer; }
+  button { background: none; border: none; color: white; font-size: 16px; }
+  input[type="range"] { flex: 1; }
+  .volumen-containerJcDuranM { display: flex; align-items: center; gap: 5px; }
+  #iconoVolumenJcDuranM { color: white; font-size: 16px; }
+  #volumenJcDuranM { width: 50px; }
+  #pantallaCompletaJcDuranM { font-size: 18px; color: white; }
