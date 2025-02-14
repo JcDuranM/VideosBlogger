@@ -1,13 +1,5 @@
 
 
-.reproductorJcDuranM {
-    position: relative;
-    display: inline-block;
-    width: 100%;
-    max-width: 640px;
-    background-color: #000; /* Fondo negro para el reproductor */
-}
-
 /* Video */
 video {
     width: 100%;
