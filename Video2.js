@@ -1,39 +1,69 @@
 //<![CDATA[
- document.addEventListener("DOMContentLoaded", () => {
-    let video = document.getElementById("videoJcDuranM"),
-        playBtn = document.getElementById("playJcDuranM"),
-        progreso = document.getElementById("progresoJcDuranM"),
-        volumen = document.getElementById("volumenJcDuranM"),
-        iconoVolumen = document.getElementById("iconoVolumenJcDuranM"),
-        tiempo = document.getElementById("tiempoJcDuranM"),
-        pantallaCompleta = document.getElementById("pantallaCompletaJcDuranM");
+document.addEventListener("DOMContentLoaded", () => {
+    const video = document.getElementById("videoJcDuranM");
+    const playBtn = document.getElementById("playJcDuranM");
+    const progreso = document.getElementById("progresoJcDuranM");
+    const volumen = document.getElementById("volumenJcDuranM");
+    const iconoVolumen = document.getElementById("iconoVolumenJcDuranM");
+    const tiempo = document.getElementById("tiempoJcDuranM");
+    const pantallaCompleta = document.getElementById("pantallaCompletaJcDuranM");
 
-    if(localStorage.getItem("videoTimeJcDuranM")) {
-        video.currentTime = localStorage.getItem("videoTimeJcDuranM");
+    if (localStorage.getItem("videoTimeJcDuranM")) {
+        video.currentTime = parseFloat(localStorage.getItem("videoTimeJcDuranM"));
     }
 
-    const togglePlay = () => (video.paused ? video.play() : video.pause(), playBtn.textContent = video.paused ? "▶" : "⏸");
-    
+    const togglePlay = () => {
+        if (video.paused) {
+            video.play();
+            playBtn.textContent = "⏸";
+        } else {
+            video.pause();
+            playBtn.textContent = "▶";
+        }
+    };
+
     const actualizarTiempo = () => {
-        let minutos = Math.floor(video.currentTime / 60).toString().padStart(2, "0"),
-            segundos = Math.floor(video.currentTime % 60).toString().padStart(2, "0"),
-            duracionMin = Math.floor(video.duration / 60).toString().padStart(2, "0"),
-            duracionSeg = Math.floor(video.duration % 60).toString().padStart(2, "0");
+        const minutos = Math.floor(video.currentTime / 60).toString().padStart(2, "0");
+        const segundos = Math.floor(video.currentTime % 60).toString().padStart(2, "0");
+        const duracionMin = Math.floor(video.duration / 60).toString().padStart(2, "0");
+        const duracionSeg = Math.floor(video.duration % 60).toString().padStart(2, "0");
         tiempo.textContent = `${minutos}:${segundos} / ${duracionMin}:${duracionSeg}`;
     };
 
     const togglePantallaCompleta = () => {
-        if (!document.fullscreenElement) video.requestFullscreen();
-        else document.exitFullscreen();
+        if (video.requestFullscreen) {
+            video.requestFullscreen();
+        } else if (video.mozRequestFullScreen) { // Firefox
+            video.mozRequestFullScreen();
+        } else if (video.webkitRequestFullscreen) { // Chrome, Safari and Opera
+            video.webkitRequestFullscreen();
+        } else if (video.msRequestFullscreen) { // IE/Edge
+            video.msRequestFullscreen();
+        }
     };
 
     document.addEventListener("keydown", (event) => {
-        if (event.key === " " || event.key === "Enter") togglePlay();
-        if (event.key === "ArrowRight") video.currentTime += 10;
-        if (event.key === "ArrowLeft") video.currentTime -= 10;
-        if (event.key === "ArrowUp") video.volume = Math.min(1, video.volume + 0.1);
-        if (event.key === "ArrowDown") video.volume = Math.max(0, video.volume - 0.1);
-        if (event.key === "m") video.muted = !video.muted;
+        switch (event.key) {
+            case " ":
+            case "Enter":
+                togglePlay();
+                break;
+            case "ArrowRight":
+                video.currentTime += 10;
+                break;
+            case "ArrowLeft":
+                video.currentTime -= 10;
+                break;
+            case "ArrowUp":
+                video.volume = Math.min(1, video.volume + 0.1);
+                break;
+            case "ArrowDown":
+                video.volume = Math.max(0, video.volume - 0.1);
+                break;
+            case "m":
+                video.muted = !video.muted;
+                break;
+        }
     });
 
     let controlsTimeout;
@@ -51,32 +81,30 @@
         localStorage.setItem("videoTimeJcDuranM", video.currentTime);
     };
 
-    progreso.oninput = () => (video.currentTime = (progreso.value / 100) * video.duration);
+    progreso.oninput = () => {
+        video.currentTime = (progreso.value / 100) * video.duration;
+    };
 
     volumen.oninput = () => {
         video.volume = volumen.value;
-        iconoVolumen.textContent = video.volume == 0 ? "🔇" : video.volume < 0.5 ? "🔉" : "🔊";
+        iconoVolumen.textContent = video.volume === 0 ? "🔇" : video.volume < 0.5 ? "🔉" : "🔊";
     };
 
-    video.onclick = playBtn.onclick = togglePlay;
-    
+    video.onclick = togglePlay;
+    playBtn.onclick = togglePlay;
     pantallaCompleta.onclick = togglePantallaCompleta;
-  });
- (function() {
-    var shortcode = /<video2>(.*?)<\/video2>/g;
-    var elementos = document.querySelectorAll(".video-container"); // Selección de contenedor específico
-    var urlVideo;
+});
+
+(function() {
+    const shortcode = /<video2>(.*?)<\/video2>/g;
+    const elementos = document.querySelectorAll(".video-container");
+    let urlVideo;
 
     elementos.forEach(function(el) {
-      el.innerHTML = el.innerHTML.replace(shortcode, function(match, videoUrl) {
-        urlVideo = videoUrl;
-
-        return `
- 
-                <video id="videoJcDuranM" src="${urlVideo}" controls></video> 
-         
-        `;
-      });
+        el.innerHTML = el.innerHTML.replace(shortcode, function(match, videoUrl) {
+            urlVideo = videoUrl;
+            return `<video id="videoJcDuranM" src="${urlVideo}" controls></video>`;
+        });
     });
-  })();
+})();
 //]]>
